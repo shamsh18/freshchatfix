@@ -50,6 +50,7 @@ public class freshchatPlugin extends CordovaPlugin {
     private FreshchatMessage freshchatMessage;
     private Map<String, String> userMeta;
     private Bundle bundle;
+    private JSONObject notificationJson;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -304,11 +305,11 @@ public class freshchatPlugin extends CordovaPlugin {
                         Log.e(LOG_TAG,"Please provide parameters for initializing FreshChat");
                         return false;
                     }
-                    JSONObject jsonArgs = new JSONObject(args.getString(0));
-                    bundle = jsonToBundle(jsonArgs);
+                   notificationJson = new JSONObject(args.getString(0));
+                    // bundle = jsonToBundle(jsonArgs);
                     cordova.getThreadPool().execute( new Runnable() {
                        public void run() {
-                            Freshchat.getInstance(cordovaContext).handleFcmMessage(cordovaContext,jsonArgs);
+                            Freshchat.getInstance(cordovaContext).handleFcmMessage(cordovaContext,notificationJson);
                             callbackContext.success();
                        }
                     });
